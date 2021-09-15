@@ -1,13 +1,26 @@
 {
-  "name": "veritas-backend",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
+  "name": "@avaloon/lib",
+  "version": "0.0.2",
+  "description": "The platform is an online beauty and wellness marketplace.",
+  "author": "Funmi Ayinde",
+  "private": false,
   "license": "UNLICENSED",
+  "files": [
+    "dist/**/**",
+    "*.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Avahair/avaloon-lib"
+  },
+  "bugs": "https://github.com/Avahair/avaloon-lib",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "publish-public": "npm publish --access public",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -18,7 +31,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate": " ts-node -r tsconfig-paths/register --transpile-only src/migrate.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/config/ormConfig.ts",
+    "commit": "npx git-cz"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.7.0",
@@ -31,6 +47,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/swagger": "^4.7.8",
+    "@types/ioredis": "^4.27.2",
     "amqplib": "^0.6.0",
     "auth0-id-generator": "^0.1.0",
     "aws-sdk": "^2.817.0",
@@ -40,13 +57,16 @@
     "class-validator": "^0.12.2",
     "debug": "^4.3.2",
     "google-libphonenumber": "^3.2.15",
+    "ioredis": "^4.27.9",
     "json-pick-keys": "0.0.4",
     "lodash": "^4.17.21",
+    "memcached": "^2.2.2",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.11.8",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "q": "^1.5.1",
     "query-string": "^6.13.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -67,6 +87,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/supertest": "^2.0.10",
     "@types/url-parse": "^1.4.3",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
