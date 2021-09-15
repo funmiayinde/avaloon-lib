@@ -32,3 +32,12 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+_env/.env
+_env/*
+/rabbitmq
+
+.env
+.env.*
+
+commands
