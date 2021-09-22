@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 import _ from 'lodash';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as IdGenerator from 'auth0-id-generator';
 import { QueryParser } from '../common';
 import moment from 'moment-timezone';
@@ -16,11 +16,7 @@ export class Utils {
    * @return  {Boolean}
    * */
   public static isObjectId(value: any | string): boolean {
-    return (
-      value &&
-      value.length > 12 &&
-      String(mongoose.Types.ObjectId(value)) === String(value)
-    );
+    return mongoose.Types.ObjectId.isValid(value);
   }
 
   public static generateRandomID(length: number): string {

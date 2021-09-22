@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { AppException } from '../expections';
+import { AppException } from '../exceptions';
 
 /**
  * The ApiKeyMiddleware class

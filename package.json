@@ -1,6 +1,6 @@
 {
   "name": "@avaloon/lib",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The platform is an online beauty and wellness marketplace.",
   "author": "Funmi Ayinde",
   "private": false,
@@ -23,6 +23,7 @@
     "publish-public": "npm publish --access public",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "dev": "nest start --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

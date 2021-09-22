@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import mongoose from 'mongoose';
 import { Utils } from '../utils';
 
@@ -92,17 +92,17 @@ export class QueryParser {
    * when object ?sort[name]=desc, sort[age]=asc {name: 'desc', age: 'asc'} it is sorted by name desc and age asc order
    * */
   get sort() {
-    if (this.sort) {
+    if (this._sort) {
       if (_.isEmpty(this.sort)) {
         try {
-          this._sort = JSON.parse(this.sort);
+          this._sort = JSON.parse(this._sort);
         } catch (e) {
           return { [this._sort]: 1 };
         }
       }
       for (const [column, direction] of Object.entries(this._sort)) {
         if (typeof direction === 'string') {
-          this.sort[column] = direction.toLowerCase() === 'asc' ? 1 : -1;
+          this._sort[column] = direction.toLowerCase() === 'asc' ? 1 : -1;
         }
       }
       return this._sort;
@@ -216,7 +216,7 @@ export class QueryParser {
       this._search = query.search;
     }
     if (query.selection) {
-      this.selection = { ...this.query, ...query.selection };
+      this.selection = query.selection;
     }
     if (query.nested) {
       this.query = { ...this.query, ...this.processNestedQuery(query) };

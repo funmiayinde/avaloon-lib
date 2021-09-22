@@ -11,7 +11,7 @@ import {
   CacheOptions,
 } from '../interfaces/cache-option';
 import _ from 'lodash';
-import { CacheException } from '../expections/cache.exception';
+import { CacheException } from '../exceptions/cache.exception';
 
 const getClient = async (options: CacheOptions): Promise<Redis.Redis> => {
   const { onClientReady, url, ...opt } = options;

@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,7 +13,7 @@ import { TodoService } from './todo.service';
     MongooseModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         return {
-          uri: config.get('service.mongodb.url'),
+          uri: config.get('service.database.mongodb.url'),
           useNewUrlParser: true,
           useUnifiedTopology: true,
         };

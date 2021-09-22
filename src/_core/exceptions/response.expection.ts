@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { AppException } from './app.exception';
 import { MongoError } from 'mongodb';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 @Catch()
 export class ResponseException implements ExceptionFilter {

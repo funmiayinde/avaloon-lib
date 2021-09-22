@@ -15,10 +15,10 @@ interface PaginationOption {
 
 /**
  * The Pagination class
- * */
+ */
 export class Pagination {
   private pagination: PaginationOption = { totalCount: 0 };
-  private urlObj: URL;
+  private urlObj: any | URL;
   private query: any;
 
   _perPage: number;
@@ -30,31 +30,28 @@ export class Pagination {
    * @constructor
    * @param {String} requestUrl This is a query object
    * @param {String} url This is a query object
-   * @param {String} itemPerPage This is query object
-   * */
-  constructor(private requestUrl: string, url: string, itemPerPage = 10) {
-    // Default paginaiton object
-    this.urlObj = new URL(`${url}${requestUrl}`);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+   * @param {String} itemsPerPage This is a query object
+   */
+  constructor(private requestUrl: string, url: string, itemsPerPage = 10) {
+    // Default pagination object
+    this.urlObj = new Url(`${url}${requestUrl}`);
     const urlObj: Url = this.urlObj;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const search: string = urlObj.query;
-    // Parse the query string into the object
+    const search: any = urlObj.query;
+    // Parse the query string into object
     this.query = queryString.parse(search);
-    //Grab the pagination object from the query object
+    // Grab the pagination object from the query object
 
     // The Limit(count to be returned)
     this._perPage =
       this.query && this.query.perPage
         ? parseInt(this.query.perPage, 10)
-        : itemPerPage;
+        : itemsPerPage;
     this.pagination.perPage = this._perPage;
 
     // The amount to be skipped
     this._skip = 0;
-    const perPage = this._perPage;
+
+    const perPage = this.perPage;
     this._queryData = { perPage: perPage.toString() };
     urlObj.set('query', this._queryData);
 
@@ -63,7 +60,7 @@ export class Pagination {
       this.query && this.query.page ? parseInt(this.query.page, 10) : 1;
     const page = this._current;
     if (page && page > 1) {
-      const urlObj: any | Url = this.urlObj;
+      const urlObj: Url = this.urlObj;
       const previous = page - 1;
       this._skip = previous * perPage;
       this.pagination.previous = previous;
@@ -72,59 +69,67 @@ export class Pagination {
     }
     this.pagination.current = page;
     urlObj.set('query', { ...this._queryData, page: page.toString() });
-    this.pagination.previousPage = urlObj.href;
+    this.pagination.currentPage = urlObj.href;
   }
 
   /**
    * @param {Number} page The next page number
-   * @return {VoidFunction}
-   * */
-  set next(page: any | number) {
-    const urlObj: any | Url = this.urlObj;
+   * @return {void}
+   */
+  set next(page) {
+    const urlObj: Url = this.urlObj;
     this.pagination.next = page;
     urlObj.set('query', { ...this._queryData, page: page.toString() });
-    this.pagination.previousPage = urlObj.href;
+    this.pagination.nextPage = urlObj.href;
   }
 
   /**
-   * @param {Boolean} more Checks if there are more items
-   * @returns {VoidFunction}
-   * */
-  set more(more: boolean) {
-    this.pagination.more = more;
+   * @param {boolean} boolean Checks if there are more items
+   * @return {void}
+   */
+  set more(boolean) {
+    this.pagination.more = boolean;
   }
 
   /**
-   * @returns {Number}
-   * */
+   * @return {Number}
+   */
   get skip() {
     return this._skip;
   }
 
   /**
    * @param {Number} count The amount of items to skip
-   * @return {Number}
-   * */
-  set skip(count: number) {
+   * @return {void}
+   */
+  set skip(count) {
     this._skip = count;
   }
 
   /**
    * @return {Number}
-   **/
+   */
   get perPage() {
     return this._perPage;
   }
 
   /**
+   * @param {Number} count The amount of items to skip
+   * @return {void}
+   */
+  set perPage(count) {
+    this._perPage = count;
+  }
+
+  /**
    * @return {Number}
-   **/
+   */
   get current() {
     return this._current;
   }
 
   /**
-   * @return {Number} total count
+   * @return {int} total count
    */
   get totalCount() {
     return this.pagination.totalCount;
@@ -132,23 +137,23 @@ export class Pagination {
 
   /**
    * @param {Number} count The total count of items
-   * @return {VoidFunction}
-   * */
-  set totalCount(count: number) {
+   * @return {void}
+   */
+  set totalCount(count) {
     this.pagination.totalCount = count;
   }
 
   /**
    * @param {Number} count The total count of items
    * @return {Boolean}
-   * */
-  morePages(count: any | number) {
+   */
+  morePages(count) {
     return count > this._perPage * this._current;
   }
 
   /**
    * @return {Object}
-   * */
+   */
   done() {
     return this.pagination;
   }
