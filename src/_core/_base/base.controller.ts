@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Document } from 'mongoose';
 import { BaseService } from './base.service';
 import {
@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { Pagination, QueryParser } from '../common';
-import { AppException } from '../expections';
+import { AppException } from '../exceptions';
 import { CacheService } from '../services/cache.service';
 
 export class BaseController<T extends Document> {
@@ -129,6 +129,7 @@ export class BaseController<T extends Document> {
       });
       return res.status(HttpStatus.OK).json(response);
     } catch (e) {
+      console.log('e', e);
       return next(e);
     }
   }
@@ -149,6 +150,7 @@ export class BaseController<T extends Document> {
     @Next() next: NextFunction,
   ): Promise<any> {
     try {
+      console.log('id:', id);
       const queryParser: QueryParser = new QueryParser(_.assign({}, req.query));
       const object = await this.service.findObject(id, queryParser);
       const response: any = await this.service.getResponse({
@@ -158,6 +160,7 @@ export class BaseController<T extends Document> {
       });
       return res.status(HttpStatus.OK).json(response);
     } catch (e) {
+      console.log('e:', e);
       return next(e);
     }
   }

@@ -37,7 +37,7 @@ export class Todo {
   })
   deleted: boolean;
 
-  static seachQuery(q: string) {
+  static searchQuery(q: string) {
     const regex = new RegExp(q);
     return [
       { title: { $regex: regex, $options: 'i' } },

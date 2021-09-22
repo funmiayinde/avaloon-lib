@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CACHE_CLIENT } from '../constants/cache.constant';
 import { CacheClient } from '../interfaces/cache-option';
 import { Redis } from 'ioredis';
-import { CacheException } from '../expections/cache.exception';
+import { CacheException } from '../exceptions/cache.exception';
 
 @Injectable()
 export class CacheService {

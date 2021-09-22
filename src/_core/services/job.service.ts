@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { QueueTasks, WorkerService } from '../common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Job } from '../jobs';
-import { WorkerExpection } from '../expections/worker.expection';
+import { WorkerExpection } from '../exceptions/worker.expection';
 
 @Injectable()
 export class JobService {

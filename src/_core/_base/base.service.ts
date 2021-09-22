@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ClientSession, Document } from 'mongoose';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Utils } from '../utils';
 import { AppResponse, Pagination, QueryParser } from '../common';
-import { AppException } from '../expections';
+import { AppException } from '../exceptions';
 import { ResponseOption } from '../interfaces';
 
 /**
@@ -101,10 +101,16 @@ export abstract class BaseService<T extends Document> {
     if (toFill && toFill.length > 0) {
       obj = _.pick(obj, ...toFill);
     }
+    const criteria = Utils.isObjectId(id) ? { _id: id } : { public_id: id };
     return this.model.findOneAndUpdate(
-      { $or: [{ public_id: id }, { _id: id }] },
+      { ...criteria },
       { ...obj },
-      { upsert: true, new: true, setDefaultOnInsert: true },
+      {
+        upsert: true,
+        new: true,
+        setDefaultOnInsert: true,
+        useFindAndModify: false,
+      },
     );
   }
 
@@ -134,8 +140,10 @@ export abstract class BaseService<T extends Document> {
     const query = _.isNull(queryParser)
       ? { deleted: false }
       : { ...queryParser.query };
+    const criteria = Utils.isObjectId(id) ? { _id: id } : { public_id: id };
+    console.log('criteria', { ...criteria });
     const condition: any = {
-      $or: [{ public_id: id }, { _id: id }],
+      ...criteria,
       ...query,
     };
     const object: any | T = await this.model.findOne(condition);
@@ -334,8 +342,9 @@ export abstract class BaseService<T extends Document> {
     id,
     queryParser: QueryParser = null,
   ): Promise<any> {
+    const criteria = Utils.isObjectId(id) ? { _id: id } : { public_id: id };
     const condition: any = {
-      $or: [{ public_id: id }, { _id: id }],
+      ...criteria,
       ...queryParser.query,
     };
     return this.model.findOne(condition);

@@ -13,6 +13,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = app.get(ConfigService);
+  console.log(`port:::${config.get('service.port')}`);
 
   await app.listen(config.get('service.port'), () =>
     Logger.log('Service Running...'),
