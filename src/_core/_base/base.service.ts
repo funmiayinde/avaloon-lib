@@ -155,6 +155,15 @@ export abstract class BaseService<T extends Document> {
 
   /**
    * @param {Object} obj The payload object
+   * @param {Object} options The payload object
+   * @returns {Object}
+   */
+  public async populate(model: any, options: any): Promise<any> {
+    return this.model.populate(model, options);
+  }
+
+  /**
+   * @param {Object} obj The payload object
    * @return {Object}
    */
   public async deleteObject(obj: any | T): Promise<any | T> {
