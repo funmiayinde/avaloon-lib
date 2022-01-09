@@ -5,7 +5,7 @@ import * as IdGenerator from 'auth0-id-generator';
 import { QueryParser } from '../common';
 import moment from 'moment-timezone';
 import { Request } from 'express';
-
+import pickKeys from 'json-pick-keys';
 /**
  * The Util class
  **/
@@ -32,6 +32,62 @@ export class Utils {
     const generator = new IdGenerator();
     return generator.new(key || 'key');
   }
+
+  public static toSlug(value: string) {
+    return _.kebabCase(value);
+  }
+
+  public static toSentenceCase(str: string) {
+    return _.upperFirst(str);
+  }
+
+  public static toTitleCase(str: string) {
+    return _.upperFirst(str.toLowerCase());
+  }
+
+  /**
+   *
+   * @param {Object} obj
+   * @param {Object}
+   * @returns {Object}
+   */
+  public static removeNilValues(obj: any): any {
+    return _.omitBy(obj, _.isNull);
+  }
+
+  /**
+   * Select a space seperated key from  an object
+   * @param {Object} obj
+   * @param {String} spaceSeparatedKeys
+   * @return {Any}
+   */
+  public static selectKeys(obj: any, spaceSeparatedKeys: string) {
+    const keyArray = spaceSeparatedKeys.trim().split(' ');
+    return _.pickBy(obj, (value, key) => {
+      return _.includes(keyArray, key);
+    });
+  }
+
+  public static pickKeys<T = any>(obj: T, spaceSeparatedKeys: string) {
+    return pickKeys(obj, spaceSeparatedKeys) as T;
+  }
+
+  /**
+   * @param {Number} hour
+   * @return {Date} The date
+   */
+  public static addHourToDate(hour = 1): Date {
+    const date = new Date();
+    const hours = date.getHours() + hour;
+    date.setHours(hours);
+    return date;
+  }
+
+  /**
+   * @param {Array<number>} arr
+   * @returns {Object}
+   */
+  public hasDuplicate = (arr: any): boolean => new Set(arr).size !== arr.length;
 
   /**
    * @param {String} objectIds
