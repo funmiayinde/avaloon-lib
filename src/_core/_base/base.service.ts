@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ClientSession, Document } from 'mongoose';
+import { ClientSession, Document, Model } from 'mongoose';
 import * as _ from 'lodash';
 import { Utils } from '../utils';
 import { AppResponse, Pagination, QueryParser } from '../common';
@@ -79,7 +80,10 @@ export abstract class BaseService<T extends Document> {
    * @param {Object} session The payload object
    * @return {Object}
    * */
-  public async createNewObject(obj, session?: ClientSession): Promise<any | T> {
+  public async createNewObject(
+    obj: any | T | Document,
+    session?: ClientSession,
+  ): Promise<any | T> {
     const toFill: string[] = this.entity.config().fillables;
     if (toFill && toFill.length > 0) {
       obj = _.pick(obj, ...toFill);
@@ -88,15 +92,21 @@ export abstract class BaseService<T extends Document> {
       ...obj,
       public_id: Utils.generateUniqueId(this.entity.config().idToken),
     });
-    return await data.save();
+    // return session ? await data.save({ session }) : await data.save();
+    return await data.save({ session });
   }
 
   /**
    * @param {Object} id The payload object
    * @param {Object} obj The payload object
+   * @param {ClientSession} session The payload object
    * @return {Object}
    * */
-  async updateObject(id, obj): Promise<any | T> {
+  async updateObject(
+    id: string,
+    obj: object,
+    session?: ClientSession,
+  ): Promise<any | T> {
     const toFill = this.entity.config().fillables;
     if (toFill && toFill.length > 0) {
       obj = _.pick(obj, ...toFill);
@@ -110,6 +120,7 @@ export abstract class BaseService<T extends Document> {
         new: true,
         setDefaultOnInsert: true,
         useFindAndModify: false,
+        session,
       },
     );
   }
@@ -117,15 +128,20 @@ export abstract class BaseService<T extends Document> {
   /**
    * @param {Object} current The payload object
    * @param {Object} obj The payload object
+   * @param {Object} session The payload object
    * @return {Object}
    * */
-  async patchUpdate(current: any | T, obj: any): Promise<any | T> {
+  async patchUpdate(
+    current: any | T,
+    obj: any,
+    session?: ClientSession,
+  ): Promise<any | T> {
     const toFill: string[] = this.entity.config().updateFillables;
     if (toFill && toFill.length > 0) {
       obj = _.pick(obj, ...toFill);
     }
     _.extend(current, obj);
-    return current.save();
+    return current.save({ session });
   }
 
   /**
@@ -348,7 +364,7 @@ export abstract class BaseService<T extends Document> {
    * @return {Promise<Object>}
    */
   public async validateObject(
-    id,
+    id: string,
     queryParser: QueryParser = null,
   ): Promise<any> {
     const criteria = Utils.isObjectId(id) ? { _id: id } : { public_id: id };

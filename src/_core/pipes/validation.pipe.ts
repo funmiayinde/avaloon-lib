@@ -32,7 +32,7 @@ export class ValidationPipe implements PipeTransform {
     return !types.includes(metatype);
   }
 
-  static formatErrors(errors: ValidationError[]) {
+  public static formatErrors(errors: ValidationError[]) {
     const formatted = {};
     const getNestedErrors = (error) => {
       if (error.children.length === 0) {
@@ -45,5 +45,13 @@ export class ValidationPipe implements PipeTransform {
       formatted[error.property] = getNestedErrors(error);
     });
     return formatted;
+  }
+
+  public static VALIDATION_ERROR(errors) {
+    return new ErrorException(
+      'Bad request / Validation error',
+      HttpStatus.BAD_REQUEST,
+      errors,
+    );
   }
 }
