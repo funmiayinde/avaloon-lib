@@ -7,7 +7,7 @@ export const WORKER_PROVIDERS = [
   {
     provide: WorkerService.WORKER_SERVICE_TOKEN,
     useFactory: (config: ConfigService) => {
-      Logger.log(`Rabbit MQ URL: ${config.get('service.rabbitMQ')}`);
+      Logger.log(`Rabbit MQ URL: ${config.get('service.rabbitMQ.url')}`);
       return ClientProxyFactory.create({
         transport: Transport.RMQ,
         options: {
