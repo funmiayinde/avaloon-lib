@@ -14,4 +14,26 @@ export class MockBaseModelClass {
         };
       };
       data: any;
+
+      constructor(data: any) {
+        this.data = data;
+      }
+    ​
+
+    static findOne(data: any) {
+        return {
+          data,
+          populate:
+            data['_id'] === undefined
+              ? jest.fn().mockImplementation(() => null)
+              : jest.fn().mockImplementation(() => {
+                  return this.populate(data);
+                }),
+          save: jest.fn(),
+          sort: jest.fn().mockImplementation(() => data),
+          exec: jest.fn().mockImplementation(function () {
+            return this.data;
+          }),
+        };
+      }
 }
