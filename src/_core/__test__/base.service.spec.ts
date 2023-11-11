@@ -455,4 +455,40 @@ describe('BaseService', () => {
                     // });
                   });
             
+                  describe('validateObject', () => {
+                    it('should validate provided payload', async () => {
+                      const payload = {
+                        id: '631a04ba9cebaac253e97402',
+                      };
+                
+                      baseServiceSpy = jest.spyOn(baseService, 'validateObject');
+                      const result = await baseService.validateObject(payload);
+                
+                      expect(baseServiceSpy).toHaveBeenCalled();
+                      expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+                      expect(result).toBeInstanceOf(Object);
+                      expect(result).toHaveProperty('data');
+                      expect(result.data).toHaveProperty('deleted');
+                      expect(result.data['deleted']).toBe(false);
+                    });
+                  });
+                
+                  describe('searchOneObject', () => {
+                    let query;
+                    it('should search one object with provided query ', async () => {
+                      query = {
+                        deleted: true,
+                        createdAt: Date.now(),
+                        latest: JSON.stringify({}),
+                      };
+                
+                      baseServiceSpy = jest.spyOn(baseService, 'searchOneObject');
+                      const result = await baseService.searchOneObject(query);
+                
+                      expect(baseServiceSpy).toHaveBeenCalled();
+                      expect(baseServiceSpy).toHaveBeenCalledWith(query);
+                      expect(result).toBeInstanceOf(Object);
+                    });
+                  });
+                
 });
