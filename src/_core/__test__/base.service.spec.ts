@@ -71,4 +71,20 @@ export class MockBaseModelClass {
       static aggregate(data: any) {
         return { data, collation: jest.fn().mockImplementation(() => data) };
       }
+
+      static countDocuments(data: any) {
+        return { data, exec: jest.fn().mockImplementation(() => data) };
+      }
+    ​
+      static findOneAndUpdate(data: any, options1: any, options2: any) {
+        return { data, save: jest.fn() };
+      }
+    ​
+      static deleteMany(data: any, options1: any, options2: any) {
+        return { data, save: jest.fn() };
+      }
+    ​
+      static populate(data: any, options1: any = {}, options2: any = {}) {
+        return { data, save: jest.fn() };
+      }
 }
