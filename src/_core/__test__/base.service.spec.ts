@@ -298,6 +298,73 @@ describe('BaseService', () => {
                 expect(result['count']).toBeInstanceOf(Object);
               });
             });
-          
 
+            describe('buildSearchQuery', () => {
+                let queryParser;
+            
+                it('should build search query from provided payload', async () => {
+                  queryParser = {
+                    query: {
+                      deleted: true,
+                      createdAt: Date.now(),
+                    },
+                  };
+                  baseServiceSpy = jest.spyOn(baseService, 'buildSearchQuery');
+                  const result = await baseService.buildSearchQuery(queryParser);
+            
+                  expect(baseServiceSpy).toHaveBeenCalled();
+                  expect(baseServiceSpy).toHaveBeenCalledWith(queryParser);
+                  expect(result).toBeInstanceOf(Object);
+                  expect(result).toHaveProperty('createdAt');
+                  expect(result).not.toHaveProperty('deleted');
+                });
+              });
+            
+              describe('countQueryDocuments', () => {
+                let query;
+            
+                it('should build search query from provided payload', async () => {
+                  query = [];
+                  baseServiceSpy = jest.spyOn(baseService, 'countQueryDocuments');
+                  const result = await baseService.countQueryDocuments(query);
+            
+                  expect(baseServiceSpy).toHaveBeenCalled();
+                  expect(baseServiceSpy).toHaveBeenCalledWith(query);
+                  expect(typeof result === 'number').toBe(true);
+                });
+              });
+    
+              describe('buildModelAggregateQueryObject', () => {
+                const pagination = {
+                  totalCount: 120,
+                  perPage: 10,
+                  skip: 1,
+                };
+                const query = [];
+            
+                const queryParser = {
+                  query: {
+                    deleted: true,
+                    createdAt: Date.now(),
+                  },
+                  page: 1,
+                  search: ['mock data'],
+                };
+            
+                it('should build model aggregate query object without sorting', async () => {
+                  baseServiceSpy = jest.spyOn(
+                    baseService,
+                    'buildModelAggregateQueryObject',
+                  );
+                  const countQueryDocumentsSpy = jest.spyOn(
+                    baseService,
+                    'countQueryDocuments',
+                  );
+            
+                  const result = await baseService.buildModelAggregateQueryObject(
+                    pagination,
+                    query,
+                    queryParser,
+                  );
+            
 });
