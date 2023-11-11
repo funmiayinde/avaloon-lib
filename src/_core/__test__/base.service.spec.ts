@@ -63,4 +63,12 @@ export class MockBaseModelClass {
         return data;
         // return { data, save: jest.fn().mockImplementation(() => data) };
       }
+
+      static async distinct(key: any, obj: any) {
+        return { key, obj };
+      }
+    ​
+      static aggregate(data: any) {
+        return { data, collation: jest.fn().mockImplementation(() => data) };
+      }
 }
