@@ -182,5 +182,31 @@ describe('BaseService', () => {
           expect(result.data).toHaveProperty('_id');
         });
     
+        it('should find an object from a collection of objects with a invalid object id', async () => {
+            const id = '6322074f7aa';
+      
+            baseServiceSpy = jest.spyOn(baseService, 'findObject');
+      
+            let result;
+      
+            try {
+              result = await baseService.findObject(id);
+              expect(baseServiceSpy).toHaveBeenCalled();
+              expect(baseServiceSpy).toHaveBeenCalledWith(id);
+              expect(baseServiceSpy).not.toThrowError('Data doesnt exist');
+              expect(result.data).toBeInstanceOf(Object);
+              expect(result.data).not.toHaveProperty('_id');
+              expect(result.data).toHaveProperty('publicId');
+            } catch (e) {
+              expect(e).toBeInstanceOf(AppException);
+              expect(e).toEqual({
+                code: 404,
+                message: 'Data not found',
+                messages: undefined,
+              });
+            }
+          });
+        });
+      
 
 });
