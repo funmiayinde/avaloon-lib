@@ -96,6 +96,17 @@ export class MockBaseModelClass {
       remove(data: any, options1: any, options2: any) {
         return { data, save: jest.fn() };
       }
-    ​
-      
 }
+
+
+describe('BaseService', () => {
+    let baseService: BaseService;
+    let baseServiceSpy: jest.SpyInstance;
+  
+    beforeAll(() => {
+      baseService = new BaseService(MockBaseModelClass);
+    });
+
+    
+
+});
