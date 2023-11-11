@@ -143,6 +143,44 @@ describe('BaseService', () => {
           expect(result.data).toHaveProperty('_id');
         });
       });
+
+      describe('patchUpdate', () => {
+        it('should update an existing entity', async () => {
+          const currentObject = {
+            userId: '631a04ba9cebaac253e97402',
+            name: 'test',
+            save: jest.fn().mockImplementation(function () {
+              return this;
+            }),
+          };
+          const payload = {
+            name: 'patch test',
+          };
+    
+          baseServiceSpy = jest.spyOn(baseService, 'patchUpdate');
+          const result = await baseService.patchUpdate(currentObject, payload);
+    
+          expect(baseServiceSpy).toHaveBeenCalled();
+          expect(result).toBeInstanceOf(Object);
+          expect(currentObject.save).toHaveBeenCalled();
+        });
+      });
+
+      describe('findObject', () => {
+        afterEach(() => {
+          baseServiceSpy.mockClear();
+        });
+        it('should find an object from a collection of objects with a valid object id', async () => {
+          const id = '6322074f7aa98fd0a96c97a8';
+    
+          baseServiceSpy = jest.spyOn(baseService, 'findObject');
+          const result = await baseService.findObject(id);
+    
+          expect(baseServiceSpy).toHaveBeenCalled();
+          expect(baseServiceSpy).toHaveBeenCalledWith(id);
+          expect(result.data).toBeInstanceOf(Object);
+          expect(result.data).toHaveProperty('_id');
+        });
     
 
 });
