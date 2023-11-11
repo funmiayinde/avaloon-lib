@@ -87,4 +87,15 @@ export class MockBaseModelClass {
       static populate(data: any, options1: any = {}, options2: any = {}) {
         return { data, save: jest.fn() };
       }
+      
+      save() {
+        // console.log('Yaay, I saved!');
+        return this.data;
+      }
+
+      remove(data: any, options1: any, options2: any) {
+        return { data, save: jest.fn() };
+      }
+    ​
+      
 }
