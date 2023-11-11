@@ -416,5 +416,43 @@ describe('BaseService', () => {
                     countQueryDocumentsSpy.mockClear();
                   });
                 });
+
+                describe('retrieveExistingResource', () => {
+                    it('should retrieve an existing resource with a non-empty payload', async () => {
+                      const payload = {
+                        name: 'test',
+                      };
+                
+                      baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
+                      const result = await baseService.retrieveExistingResource(payload);
+                
+                      expect(baseServiceSpy).toHaveBeenCalled();
+                      expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+                      expect(result.data).toBeInstanceOf(Object);
+                      expect(result.data).toHaveProperty('deleted');
+                      expect(result.data['deleted']).toBe(false);
+                    });
+                
+                    // it('should retrieve an existing resource with an empty payload', async () => {
+                    //   const payload = {};
+                
+                    //   baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
+                    //   const configMock = MockBaseModelClass.config as unknown as jest.Mock;
+                    //   configMock.mockImplementation(() => {
+                    //     return {
+                    //       fillables: ['name'],
+                    //       updateFillables: ['name'],
+                    //       uniques: [],
+                    //       dateFilters: ['createdAt', 'updatedAt'],
+                    //       softDelete: true,
+                    //     };
+                    //   });
+                    //   const result = await baseService.retrieveExistingResource(payload);
+                
+                    //   expect(baseServiceSpy).toHaveBeenCalled();
+                    //   expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+                    //   expect(result).toBe(null);
+                    // });
+                  });
             
 });
