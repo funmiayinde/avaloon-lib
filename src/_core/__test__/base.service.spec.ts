@@ -129,392 +129,390 @@ describe('BaseService', () => {
 
     describe('updateObject', () => {
         it('should update an existing object', async () => {
-          const payload = {
-            userId: '631a04ba9cebaac253e97402',
-            name: 'test',
-          };
-          const id = '6322074f7aa98fd0a96c97a8';
-    
-          baseServiceSpy = jest.spyOn(baseService, 'updateObject');
-          const result = await baseService.updateObject(id, payload);
-    
-          expect(baseServiceSpy).toHaveBeenCalled();
-          expect(result.data).toBeInstanceOf(Object);
-          expect(result.data).toHaveProperty('_id');
-        });
-      });
+            const payload = {
+                userId: '631a04ba9cebaac253e97402',
+                name: 'test',
+            };
+            const id = '6322074f7aa98fd0a96c97a8';
 
-      describe('patchUpdate', () => {
+            baseServiceSpy = jest.spyOn(baseService, 'updateObject');
+            const result = await baseService.updateObject(id, payload);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(result.data).toBeInstanceOf(Object);
+            expect(result.data).toHaveProperty('_id');
+        });
+    });
+
+    describe('patchUpdate', () => {
         it('should update an existing entity', async () => {
-          const currentObject = {
-            userId: '631a04ba9cebaac253e97402',
-            name: 'test',
-            save: jest.fn().mockImplementation(function () {
-              return this;
-            }),
-          };
-          const payload = {
-            name: 'patch test',
-          };
-    
-          baseServiceSpy = jest.spyOn(baseService, 'patchUpdate');
-          const result = await baseService.patchUpdate(currentObject, payload);
-    
-          expect(baseServiceSpy).toHaveBeenCalled();
-          expect(result).toBeInstanceOf(Object);
-          expect(currentObject.save).toHaveBeenCalled();
-        });
-      });
-
-      describe('findObject', () => {
-        afterEach(() => {
-          baseServiceSpy.mockClear();
-        });
-        it('should find an object from a collection of objects with a valid object id', async () => {
-          const id = '6322074f7aa98fd0a96c97a8';
-    
-          baseServiceSpy = jest.spyOn(baseService, 'findObject');
-          const result = await baseService.findObject(id);
-    
-          expect(baseServiceSpy).toHaveBeenCalled();
-          expect(baseServiceSpy).toHaveBeenCalledWith(id);
-          expect(result.data).toBeInstanceOf(Object);
-          expect(result.data).toHaveProperty('_id');
-        });
-    
-        it('should find an object from a collection of objects with a invalid object id', async () => {
-            const id = '6322074f7aa';
-      
-            baseServiceSpy = jest.spyOn(baseService, 'findObject');
-      
-            let result;
-      
-            try {
-              result = await baseService.findObject(id);
-              expect(baseServiceSpy).toHaveBeenCalled();
-              expect(baseServiceSpy).toHaveBeenCalledWith(id);
-              expect(baseServiceSpy).not.toThrowError('Data doesnt exist');
-              expect(result.data).toBeInstanceOf(Object);
-              expect(result.data).not.toHaveProperty('_id');
-              expect(result.data).toHaveProperty('publicId');
-            } catch (e) {
-              expect(e).toBeInstanceOf(AppException);
-              expect(e).toEqual({
-                code: 404,
-                message: 'Data not found',
-                messages: undefined,
-              });
-            }
-          });
-        });
-      
-        describe('deleteObject', () => {
-            it('should delete an object', async () => {
-              const payload = {
+            const currentObject = {
                 userId: '631a04ba9cebaac253e97402',
                 name: 'test',
                 save: jest.fn().mockImplementation(function () {
-                  return this;
+                    return this;
                 }),
-              };
-        
-              baseServiceSpy = jest.spyOn(baseService, 'deleteObject');
-              const result = await baseService.deleteObject(payload);
-        
-              expect(baseServiceSpy).toHaveBeenCalled();
-              expect(baseServiceSpy).toHaveBeenCalledWith(payload);
-              expect(payload.save).toHaveBeenCalled();
-              expect(result).toBeInstanceOf(Object);
-              expect(result).toHaveProperty('deleted');
-              expect(result['deleted']).toBe(true);
-            });
-          });
+            };
+            const payload = {
+                name: 'patch test',
+            };
 
-          describe('buildModelQueryObject', () => {
-            let pagination;
-            let queryParser;
-        
-            it('should build model query object without sorting', async () => {
-              pagination = {
+            baseServiceSpy = jest.spyOn(baseService, 'patchUpdate');
+            const result = await baseService.patchUpdate(currentObject, payload);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(result).toBeInstanceOf(Object);
+            expect(currentObject.save).toHaveBeenCalled();
+        });
+    });
+
+    describe('findObject', () => {
+        afterEach(() => {
+            baseServiceSpy.mockClear();
+        });
+        it('should find an object from a collection of objects with a valid object id', async () => {
+            const id = '6322074f7aa98fd0a96c97a8';
+
+            baseServiceSpy = jest.spyOn(baseService, 'findObject');
+            const result = await baseService.findObject(id);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(id);
+            expect(result.data).toBeInstanceOf(Object);
+            expect(result.data).toHaveProperty('_id');
+        });
+
+        it('should find an object from a collection of objects with a invalid object id', async () => {
+            const id = '6322074f7aa';
+
+            baseServiceSpy = jest.spyOn(baseService, 'findObject');
+
+            let result;
+
+            try {
+                result = await baseService.findObject(id);
+                expect(baseServiceSpy).toHaveBeenCalled();
+                expect(baseServiceSpy).toHaveBeenCalledWith(id);
+                expect(baseServiceSpy).not.toThrowError('Data doesnt exist');
+                expect(result.data).toBeInstanceOf(Object);
+                expect(result.data).not.toHaveProperty('_id');
+                expect(result.data).toHaveProperty('publicId');
+            } catch (e) {
+                expect(e).toBeInstanceOf(AppException);
+                expect(e).toEqual({
+                    code: 404,
+                    message: 'Data not found',
+                    messages: undefined,
+                });
+            }
+        });
+    });
+
+    describe('deleteObject', () => {
+        it('should delete an object', async () => {
+            const payload = {
+                userId: '631a04ba9cebaac253e97402',
+                name: 'test',
+                save: jest.fn().mockImplementation(function () {
+                    return this;
+                }),
+            };
+
+            baseServiceSpy = jest.spyOn(baseService, 'deleteObject');
+            const result = await baseService.deleteObject(payload);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+            expect(payload.save).toHaveBeenCalled();
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('deleted');
+            expect(result['deleted']).toBe(true);
+        });
+    });
+
+    describe('buildModelQueryObject', () => {
+        let pagination;
+        let queryParser;
+
+        it('should build model query object without sorting', async () => {
+            pagination = {
                 totalCount: 120,
                 perPage: 10,
                 skip: 1,
-              };
-              queryParser = {
+            };
+            queryParser = {
                 query: {
-                  deleted: true,
-                  createdAt: Date.now(),
+                    deleted: true,
+                    createdAt: Date.now(),
                 },
                 page: 1,
                 search: ['mock data'],
-              };
-        
-              baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
-              const result = await baseService.buildModelQueryObject(
+            };
+
+            baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
+            const result = await baseService.buildModelQueryObject(
                 pagination,
                 queryParser,
-              );
-        
-              expect(baseServiceSpy).toHaveBeenCalled();
-              expect(baseServiceSpy).toHaveBeenCalledWith(pagination, queryParser);
-              expect(result).toBeInstanceOf(Object);
-              expect(result).toHaveProperty('value');
-              expect(result).toHaveProperty('count');
-              expect(result['value']).toBeInstanceOf(Object);
-              expect(result['count']).toBeInstanceOf(Object);
-            });
+            );
 
-            it('should build model query object without sorting', async () => {
-                pagination = {
-                  totalCount: 120,
-                  perPage: 10,
-                  skip: 1,
-                };
-                queryParser = {
-                  query: {
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(pagination, queryParser);
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('value');
+            expect(result).toHaveProperty('count');
+            expect(result['value']).toBeInstanceOf(Object);
+            expect(result['count']).toBeInstanceOf(Object);
+        });
+
+        it('should build model query object without sorting', async () => {
+            pagination = {
+                totalCount: 120,
+                perPage: 10,
+                skip: 1,
+            };
+            queryParser = {
+                query: {
                     deleted: true,
                     createdAt: Date.now(),
-                  },
-                  page: 1,
-                  search: ['mock data'],
-                };
-                const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
-          
-                baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
-                const result = await baseService.buildModelQueryObject(
-                  pagination,
-                  updatedQueryParser,
-                );
-          
-                expect(baseServiceSpy).toHaveBeenCalled();
-                expect(baseServiceSpy).toHaveBeenCalledWith(
-                  pagination,
-                  updatedQueryParser,
-                );
-                expect(result).toBeInstanceOf(Object);
-                expect(result).toHaveProperty('value');
-                expect(result).toHaveProperty('count');
-                expect(result['value']).toBeInstanceOf(Object);
-                expect(result['count']).toBeInstanceOf(Object);
-              });
-            });
+                },
+                page: 1,
+                search: ['mock data'],
+            };
+            const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
 
-            describe('buildSearchQuery', () => {
-                let queryParser;
-            
-                it('should build search query from provided payload', async () => {
-                  queryParser = {
-                    query: {
-                      deleted: true,
-                      createdAt: Date.now(),
-                    },
-                  };
-                  baseServiceSpy = jest.spyOn(baseService, 'buildSearchQuery');
-                  const result = await baseService.buildSearchQuery(queryParser);
-            
-                  expect(baseServiceSpy).toHaveBeenCalled();
-                  expect(baseServiceSpy).toHaveBeenCalledWith(queryParser);
-                  expect(result).toBeInstanceOf(Object);
-                  expect(result).toHaveProperty('createdAt');
-                  expect(result).not.toHaveProperty('deleted');
-                });
-              });
-            
-              describe('countQueryDocuments', () => {
-                let query;
-            
-                it('should build search query from provided payload', async () => {
-                  query = [];
-                  baseServiceSpy = jest.spyOn(baseService, 'countQueryDocuments');
-                  const result = await baseService.countQueryDocuments(query);
-            
-                  expect(baseServiceSpy).toHaveBeenCalled();
-                  expect(baseServiceSpy).toHaveBeenCalledWith(query);
-                  expect(typeof result === 'number').toBe(true);
-                });
-              });
-    
-              describe('buildModelAggregateQueryObject', () => {
-                const pagination = {
-                  totalCount: 120,
-                  perPage: 10,
-                  skip: 1,
-                };
-                const query = [];
-            
-                const queryParser = {
-                  query: {
+            baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
+            const result = await baseService.buildModelQueryObject(
+                pagination,
+                updatedQueryParser,
+            );
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(
+                pagination,
+                updatedQueryParser,
+            );
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('value');
+            expect(result).toHaveProperty('count');
+            expect(result['value']).toBeInstanceOf(Object);
+            expect(result['count']).toBeInstanceOf(Object);
+        });
+    });
+
+    describe('buildSearchQuery', () => {
+        let queryParser;
+
+        it('should build search query from provided payload', async () => {
+            queryParser = {
+                query: {
                     deleted: true,
                     createdAt: Date.now(),
-                  },
-                  page: 1,
-                  search: ['mock data'],
-                };
-            
-                it('should build model aggregate query object without sorting', async () => {
-                  baseServiceSpy = jest.spyOn(
-                    baseService,
-                    'buildModelAggregateQueryObject',
-                  );
-                  const countQueryDocumentsSpy = jest.spyOn(
-                    baseService,
-                    'countQueryDocuments',
-                  );
-            
-                  const result = await baseService.buildModelAggregateQueryObject(
-                    pagination,
-                    query,
-                    queryParser,
-                  );
+                },
+            };
+            baseServiceSpy = jest.spyOn(baseService, 'buildSearchQuery');
+            const result = await baseService.buildSearchQuery(queryParser);
 
-                  expect(baseServiceSpy).toHaveBeenCalled();
-                  expect(baseServiceSpy).toHaveBeenCalledWith(
-                    pagination,
-                    query,
-                    queryParser,
-                  );
-                  expect(countQueryDocumentsSpy).toHaveBeenCalled();
-                  expect(result).toBeInstanceOf(Object);
-                  expect(result).toHaveProperty('value');
-                  expect(result).toHaveProperty('count');
-                  expect(result['value']).toBeInstanceOf(Array);
-                  expect(typeof result['count'] === 'number').toBe(true);
-            
-                  countQueryDocumentsSpy.mockClear();
-                });
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(queryParser);
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('createdAt');
+            expect(result).not.toHaveProperty('deleted');
+        });
+    });
 
-                it('should build model aggregate query object with sorting', async () => {
-                    const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
-                    baseServiceSpy = jest.spyOn(
-                      baseService,
-                      'buildModelAggregateQueryObject',
-                    );
-                    const countQueryDocumentsSpy = jest.spyOn(
-                      baseService,
-                      'countQueryDocuments',
-                    );
-              
-                    const result = await baseService.buildModelAggregateQueryObject(
-                      pagination,
-                      query,
-                      updatedQueryParser,
-                    );
-              
-                    expect(baseServiceSpy).toHaveBeenCalled();
-                    expect(baseServiceSpy).toHaveBeenCalledWith(
-                      pagination,
-                      query,
-                      updatedQueryParser,
-                    );
-                    expect(countQueryDocumentsSpy).toHaveBeenCalled();
-                    expect(result).toBeInstanceOf(Object);
-                    expect(result).toHaveProperty('value');
-                    expect(result).toHaveProperty('count');
-                    expect(result['value']).toBeInstanceOf(Array);
-                    expect(typeof result['count'] === 'number').toBe(true);
-              
-                    countQueryDocumentsSpy.mockClear();
-                  });
-                });
+    describe('countQueryDocuments', () => {
+        let query;
 
-                describe('retrieveExistingResource', () => {
-                    it('should retrieve an existing resource with a non-empty payload', async () => {
-                      const payload = {
-                        name: 'test',
-                      };
-                
-                      baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
-                      const result = await baseService.retrieveExistingResource(payload);
-                
-                      expect(baseServiceSpy).toHaveBeenCalled();
-                      expect(baseServiceSpy).toHaveBeenCalledWith(payload);
-                      expect(result.data).toBeInstanceOf(Object);
-                      expect(result.data).toHaveProperty('deleted');
-                      expect(result.data['deleted']).toBe(false);
-                    });
-                
-                    // it('should retrieve an existing resource with an empty payload', async () => {
-                    //   const payload = {};
-                
-                    //   baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
-                    //   const configMock = MockBaseModelClass.config as unknown as jest.Mock;
-                    //   configMock.mockImplementation(() => {
-                    //     return {
-                    //       fillables: ['name'],
-                    //       updateFillables: ['name'],
-                    //       uniques: [],
-                    //       dateFilters: ['createdAt', 'updatedAt'],
-                    //       softDelete: true,
-                    //     };
-                    //   });
-                    //   const result = await baseService.retrieveExistingResource(payload);
-                
-                    //   expect(baseServiceSpy).toHaveBeenCalled();
-                    //   expect(baseServiceSpy).toHaveBeenCalledWith(payload);
-                    //   expect(result).toBe(null);
-                    // });
-                  });
-            
-                  describe('validateObject', () => {
-                    it('should validate provided payload', async () => {
-                      const payload = {
-                        id: '631a04ba9cebaac253e97402',
-                      };
-                
-                      baseServiceSpy = jest.spyOn(baseService, 'validateObject');
-                      const result = await baseService.validateObject(payload);
-                
-                      expect(baseServiceSpy).toHaveBeenCalled();
-                      expect(baseServiceSpy).toHaveBeenCalledWith(payload);
-                      expect(result).toBeInstanceOf(Object);
-                      expect(result).toHaveProperty('data');
-                      expect(result.data).toHaveProperty('deleted');
-                      expect(result.data['deleted']).toBe(false);
-                    });
-                  });
-                
-                  describe('searchOneObject', () => {
-                    let query;
-                    it('should search one object with provided query ', async () => {
-                      query = {
-                        deleted: true,
-                        createdAt: Date.now(),
-                        latest: JSON.stringify({}),
-                      };
-                
-                      baseServiceSpy = jest.spyOn(baseService, 'searchOneObject');
-                      const result = await baseService.searchOneObject(query);
-                
-                      expect(baseServiceSpy).toHaveBeenCalled();
-                      expect(baseServiceSpy).toHaveBeenCalledWith(query);
-                      expect(result).toBeInstanceOf(Object);
-                    });
-                  });
+        it('should build search query from provided payload', async () => {
+            query = [];
+            baseServiceSpy = jest.spyOn(baseService, 'countQueryDocuments');
+            const result = await baseService.countQueryDocuments(query);
 
-                  describe('findByUniqueKey', () => {
-                    it('should search a collection using a unique key with provided params', async () => {
-                      const key = 'test-key';
-                      const params = {};
-                
-                      baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
-                      const result = await baseService.findByUniqueKey(key, params);
-                
-                      expect(baseServiceSpy).toHaveBeenCalled();
-                      expect(baseServiceSpy).toHaveBeenCalledWith(key, params);
-                      expect(result).toBeInstanceOf(Object);
-                    });
-                
-                    it('should search a collection using a unique key with default params', async () => {
-                      const key = 'test-key';
-                
-                      baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
-                      const result = await baseService.findByUniqueKey(key);
-                
-                      expect(baseServiceSpy).toHaveBeenCalled();
-                      expect(baseServiceSpy).toHaveBeenCalledWith(key);
-                      expect(result).toBeInstanceOf(Object);
-                    });
-                  });
-                
-                
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(query);
+            expect(typeof result === 'number').toBe(true);
+        });
+    });
+
+    describe('buildModelAggregateQueryObject', () => {
+        const pagination = {
+            totalCount: 120,
+            perPage: 10,
+            skip: 1,
+        };
+        const query = [];
+
+        const queryParser = {
+            query: {
+                deleted: true,
+                createdAt: Date.now(),
+            },
+            page: 1,
+            search: ['mock data'],
+        };
+
+        it('should build model aggregate query object without sorting', async () => {
+            baseServiceSpy = jest.spyOn(
+                baseService,
+                'buildModelAggregateQueryObject',
+            );
+            const countQueryDocumentsSpy = jest.spyOn(
+                baseService,
+                'countQueryDocuments',
+            );
+
+            const result = await baseService.buildModelAggregateQueryObject(
+                pagination,
+                query,
+                queryParser,
+            );
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(
+                pagination,
+                query,
+                queryParser,
+            );
+            expect(countQueryDocumentsSpy).toHaveBeenCalled();
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('value');
+            expect(result).toHaveProperty('count');
+            expect(result['value']).toBeInstanceOf(Array);
+            expect(typeof result['count'] === 'number').toBe(true);
+
+            countQueryDocumentsSpy.mockClear();
+        });
+
+        it('should build model aggregate query object with sorting', async () => {
+            const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
+            baseServiceSpy = jest.spyOn(
+                baseService,
+                'buildModelAggregateQueryObject',
+            );
+            const countQueryDocumentsSpy = jest.spyOn(
+                baseService,
+                'countQueryDocuments',
+            );
+
+            const result = await baseService.buildModelAggregateQueryObject(
+                pagination,
+                query,
+                updatedQueryParser,
+            );
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(
+                pagination,
+                query,
+                updatedQueryParser,
+            );
+            expect(countQueryDocumentsSpy).toHaveBeenCalled();
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('value');
+            expect(result).toHaveProperty('count');
+            expect(result['value']).toBeInstanceOf(Array);
+            expect(typeof result['count'] === 'number').toBe(true);
+
+            countQueryDocumentsSpy.mockClear();
+        });
+    });
+
+    describe('retrieveExistingResource', () => {
+        it('should retrieve an existing resource with a non-empty payload', async () => {
+            const payload = {
+                name: 'test',
+            };
+
+            baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
+            const result = await baseService.retrieveExistingResource(payload);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+            expect(result.data).toBeInstanceOf(Object);
+            expect(result.data).toHaveProperty('deleted');
+            expect(result.data['deleted']).toBe(false);
+        });
+
+        // it('should retrieve an existing resource with an empty payload', async () => {
+        //   const payload = {};
+
+        //   baseServiceSpy = jest.spyOn(baseService, 'retrieveExistingResource');
+        //   const configMock = MockBaseModelClass.config as unknown as jest.Mock;
+        //   configMock.mockImplementation(() => {
+        //     return {
+        //       fillables: ['name'],
+        //       updateFillables: ['name'],
+        //       uniques: [],
+        //       dateFilters: ['createdAt', 'updatedAt'],
+        //       softDelete: true,
+        //     };
+        //   });
+        //   const result = await baseService.retrieveExistingResource(payload);
+
+        //   expect(baseServiceSpy).toHaveBeenCalled();
+        //   expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+        //   expect(result).toBe(null);
+        // });
+    });
+
+    describe('validateObject', () => {
+        it('should validate provided payload', async () => {
+            const payload = {
+                id: '631a04ba9cebaac253e97402',
+            };
+
+            baseServiceSpy = jest.spyOn(baseService, 'validateObject');
+            const result = await baseService.validateObject(payload);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+            expect(result).toBeInstanceOf(Object);
+            expect(result).toHaveProperty('data');
+            expect(result.data).toHaveProperty('deleted');
+            expect(result.data['deleted']).toBe(false);
+        });
+    });
+
+    describe('searchOneObject', () => {
+        let query;
+        it('should search one object with provided query ', async () => {
+            query = {
+                deleted: true,
+                createdAt: Date.now(),
+                latest: JSON.stringify({}),
+            };
+
+            baseServiceSpy = jest.spyOn(baseService, 'searchOneObject');
+            const result = await baseService.searchOneObject(query);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(query);
+            expect(result).toBeInstanceOf(Object);
+        });
+    });
+
+    describe('findByUniqueKey', () => {
+        it('should search a collection using a unique key with provided params', async () => {
+            const key = 'test-key';
+            const params = {};
+
+            baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
+            const result = await baseService.findByUniqueKey(key, params);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(key, params);
+            expect(result).toBeInstanceOf(Object);
+        });
+
+        it('should search a collection using a unique key with default params', async () => {
+            const key = 'test-key';
+
+            baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
+            const result = await baseService.findByUniqueKey(key);
+
+            expect(baseServiceSpy).toHaveBeenCalled();
+            expect(baseServiceSpy).toHaveBeenCalledWith(key);
+            expect(result).toBeInstanceOf(Object);
+        });
+    });
 });
