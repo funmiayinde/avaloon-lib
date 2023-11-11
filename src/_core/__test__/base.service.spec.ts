@@ -208,5 +208,96 @@ describe('BaseService', () => {
           });
         });
       
+        describe('deleteObject', () => {
+            it('should delete an object', async () => {
+              const payload = {
+                userId: '631a04ba9cebaac253e97402',
+                name: 'test',
+                save: jest.fn().mockImplementation(function () {
+                  return this;
+                }),
+              };
+        
+              baseServiceSpy = jest.spyOn(baseService, 'deleteObject');
+              const result = await baseService.deleteObject(payload);
+        
+              expect(baseServiceSpy).toHaveBeenCalled();
+              expect(baseServiceSpy).toHaveBeenCalledWith(payload);
+              expect(payload.save).toHaveBeenCalled();
+              expect(result).toBeInstanceOf(Object);
+              expect(result).toHaveProperty('deleted');
+              expect(result['deleted']).toBe(true);
+            });
+          });
+
+          describe('buildModelQueryObject', () => {
+            let pagination;
+            let queryParser;
+        
+            it('should build model query object without sorting', async () => {
+              pagination = {
+                totalCount: 120,
+                perPage: 10,
+                skip: 1,
+              };
+              queryParser = {
+                query: {
+                  deleted: true,
+                  createdAt: Date.now(),
+                },
+                page: 1,
+                search: ['mock data'],
+              };
+        
+              baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
+              const result = await baseService.buildModelQueryObject(
+                pagination,
+                queryParser,
+              );
+        
+              expect(baseServiceSpy).toHaveBeenCalled();
+              expect(baseServiceSpy).toHaveBeenCalledWith(pagination, queryParser);
+              expect(result).toBeInstanceOf(Object);
+              expect(result).toHaveProperty('value');
+              expect(result).toHaveProperty('count');
+              expect(result['value']).toBeInstanceOf(Object);
+              expect(result['count']).toBeInstanceOf(Object);
+            });
+
+            it('should build model query object without sorting', async () => {
+                pagination = {
+                  totalCount: 120,
+                  perPage: 10,
+                  skip: 1,
+                };
+                queryParser = {
+                  query: {
+                    deleted: true,
+                    createdAt: Date.now(),
+                  },
+                  page: 1,
+                  search: ['mock data'],
+                };
+                const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
+          
+                baseServiceSpy = jest.spyOn(baseService, 'buildModelQueryObject');
+                const result = await baseService.buildModelQueryObject(
+                  pagination,
+                  updatedQueryParser,
+                );
+          
+                expect(baseServiceSpy).toHaveBeenCalled();
+                expect(baseServiceSpy).toHaveBeenCalledWith(
+                  pagination,
+                  updatedQueryParser,
+                );
+                expect(result).toBeInstanceOf(Object);
+                expect(result).toHaveProperty('value');
+                expect(result).toHaveProperty('count');
+                expect(result['value']).toBeInstanceOf(Object);
+                expect(result['count']).toBeInstanceOf(Object);
+              });
+            });
+          
 
 });
