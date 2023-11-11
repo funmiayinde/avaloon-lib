@@ -366,5 +366,55 @@ describe('BaseService', () => {
                     query,
                     queryParser,
                   );
+
+                  expect(baseServiceSpy).toHaveBeenCalled();
+                  expect(baseServiceSpy).toHaveBeenCalledWith(
+                    pagination,
+                    query,
+                    queryParser,
+                  );
+                  expect(countQueryDocumentsSpy).toHaveBeenCalled();
+                  expect(result).toBeInstanceOf(Object);
+                  expect(result).toHaveProperty('value');
+                  expect(result).toHaveProperty('count');
+                  expect(result['value']).toBeInstanceOf(Array);
+                  expect(typeof result['count'] === 'number').toBe(true);
+            
+                  countQueryDocumentsSpy.mockClear();
+                });
+
+                it('should build model aggregate query object with sorting', async () => {
+                    const updatedQueryParser = Object.assign({}, queryParser, { sort: {} });
+                    baseServiceSpy = jest.spyOn(
+                      baseService,
+                      'buildModelAggregateQueryObject',
+                    );
+                    const countQueryDocumentsSpy = jest.spyOn(
+                      baseService,
+                      'countQueryDocuments',
+                    );
+              
+                    const result = await baseService.buildModelAggregateQueryObject(
+                      pagination,
+                      query,
+                      updatedQueryParser,
+                    );
+              
+                    expect(baseServiceSpy).toHaveBeenCalled();
+                    expect(baseServiceSpy).toHaveBeenCalledWith(
+                      pagination,
+                      query,
+                      updatedQueryParser,
+                    );
+                    expect(countQueryDocumentsSpy).toHaveBeenCalled();
+                    expect(result).toBeInstanceOf(Object);
+                    expect(result).toHaveProperty('value');
+                    expect(result).toHaveProperty('count');
+                    expect(result['value']).toBeInstanceOf(Array);
+                    expect(typeof result['count'] === 'number').toBe(true);
+              
+                    countQueryDocumentsSpy.mockClear();
+                  });
+                });
             
 });
