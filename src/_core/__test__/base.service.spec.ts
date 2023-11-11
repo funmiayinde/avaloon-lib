@@ -127,5 +127,22 @@ describe('BaseService', () => {
         });
     });
 
+    describe('updateObject', () => {
+        it('should update an existing object', async () => {
+          const payload = {
+            userId: '631a04ba9cebaac253e97402',
+            name: 'test',
+          };
+          const id = '6322074f7aa98fd0a96c97a8';
+    
+          baseServiceSpy = jest.spyOn(baseService, 'updateObject');
+          const result = await baseService.updateObject(id, payload);
+    
+          expect(baseServiceSpy).toHaveBeenCalled();
+          expect(result.data).toBeInstanceOf(Object);
+          expect(result.data).toHaveProperty('_id');
+        });
+      });
+    
 
 });
