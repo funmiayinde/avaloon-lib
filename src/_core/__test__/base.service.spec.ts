@@ -36,4 +36,18 @@ export class MockBaseModelClass {
           }),
         };
       }
+
+      static find(data: any) {
+        return {
+          data,
+          save: jest.fn(),
+          skip: jest.fn().mockImplementation(function () {
+            return this;
+          }),
+          limit: jest.fn().mockImplementation(function () {
+            return this;
+          }),
+        
+        };
+      }
 }
