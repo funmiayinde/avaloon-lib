@@ -490,5 +490,31 @@ describe('BaseService', () => {
                       expect(result).toBeInstanceOf(Object);
                     });
                   });
+
+                  describe('findByUniqueKey', () => {
+                    it('should search a collection using a unique key with provided params', async () => {
+                      const key = 'test-key';
+                      const params = {};
+                
+                      baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
+                      const result = await baseService.findByUniqueKey(key, params);
+                
+                      expect(baseServiceSpy).toHaveBeenCalled();
+                      expect(baseServiceSpy).toHaveBeenCalledWith(key, params);
+                      expect(result).toBeInstanceOf(Object);
+                    });
+                
+                    it('should search a collection using a unique key with default params', async () => {
+                      const key = 'test-key';
+                
+                      baseServiceSpy = jest.spyOn(baseService, 'findByUniqueKey');
+                      const result = await baseService.findByUniqueKey(key);
+                
+                      expect(baseServiceSpy).toHaveBeenCalled();
+                      expect(baseServiceSpy).toHaveBeenCalledWith(key);
+                      expect(result).toBeInstanceOf(Object);
+                    });
+                  });
+                
                 
 });
