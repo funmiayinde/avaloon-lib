@@ -39,15 +39,23 @@ export class MockBaseModelClass {
 
       static find(data: any) {
         return {
-          data,
-          save: jest.fn(),
-          skip: jest.fn().mockImplementation(function () {
-            return this;
-          }),
-          limit: jest.fn().mockImplementation(function () {
-            return this;
-          }),
-        
-        };
+            data,
+            save: jest.fn(),
+            skip: jest.fn().mockImplementation(function () {
+              return this;
+            }),
+            limit: jest.fn().mockImplementation(function () {
+              return this;
+            }),
+            sort: jest.fn().mockImplementation(function () {
+              return this;
+            }),
+            select: jest.fn().mockImplementation(function () {
+              return this;
+            }),
+            exec: jest.fn().mockImplementation(function () {
+              return this.data;
+            }),
+          };
       }
 }
