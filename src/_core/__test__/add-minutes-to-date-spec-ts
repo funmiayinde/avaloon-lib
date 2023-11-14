@@ -15,7 +15,7 @@ describe('addMinToDate', () => {
 ​
     generateNewdateSpy.mockClear();
   });
-
+  
   it('should add minute(s) to current date', async () => {
     const min = 2;
 ​
@@ -23,5 +23,12 @@ describe('addMinToDate', () => {
 ​
     const result = Utils.addMinToDate(min);
 ​
+    expect(generateNewdateSpy).toHaveBeenCalled();
+    expect(generateNewdateSpy).toHaveBeenCalledWith(min);
+    expect(generateNewdateSpy).toHaveReturned();
+    expect(generateNewdateSpy).toHaveReturnedWith(result);
+    expect(result instanceof Date).toBe(true);
+​
+    generateNewdateSpy.mockClear();
   });
 });
