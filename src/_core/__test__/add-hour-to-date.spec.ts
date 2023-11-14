@@ -16,5 +16,13 @@ describe('addHourToDate', () => {
     generateNewdateSpy.mockClear();
   });
 ​
-  
+it('should add hour(s) to current date', async () => {
+    const hour = 2;
+​
+    const generateNewdateSpy = jest.spyOn(Utils, 'addHourToDate');
+​
+    const result = Utils.addHourToDate(hour);
+​
+    
+  });
 });
