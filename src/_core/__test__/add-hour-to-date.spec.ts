@@ -23,6 +23,12 @@ it('should add hour(s) to current date', async () => {
 ​
     const result = Utils.addHourToDate(hour);
 ​
-    
+    expect(generateNewdateSpy).toHaveBeenCalled();
+    expect(generateNewdateSpy).toHaveBeenCalledWith(hour);
+    expect(generateNewdateSpy).toHaveReturned();
+    expect(generateNewdateSpy).toHaveReturnedWith(result);
+    expect(result instanceof Date).toBe(true);
+​
+    generateNewdateSpy.mockClear();
   });
 });
