@@ -15,5 +15,7 @@ describe('addDays', () => {
         expect(generateNewdateSpy).toHaveReturnedWith(result);
         expect(result instanceof Date).toBe(true);
 
+        generateNewdateSpy.mockClear();
+
     });
 });
