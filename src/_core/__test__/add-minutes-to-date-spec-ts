@@ -7,6 +7,13 @@ describe('addMinToDate', () => {
 ​
     const result = Utils.addMinToDate();
 ​
+    expect(generateNewdateSpy).toHaveBeenCalled();
+    expect(generateNewdateSpy).toHaveBeenCalledWith();
+    expect(generateNewdateSpy).toHaveReturned();
+    expect(generateNewdateSpy).toHaveReturnedWith(result);
+    expect(result instanceof Date).toBe(true);
+​
+    generateNewdateSpy.mockClear();
   });
 
   
