@@ -16,5 +16,12 @@ describe('addMinToDate', () => {
     generateNewdateSpy.mockClear();
   });
 
-  
+  it('should add minute(s) to current date', async () => {
+    const min = 2;
+​
+    const generateNewdateSpy = jest.spyOn(Utils, 'addMinToDate');
+​
+    const result = Utils.addMinToDate(min);
+​
+  });
 });
